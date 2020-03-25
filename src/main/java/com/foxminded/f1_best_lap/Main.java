@@ -1,6 +1,7 @@
 package com.foxminded.f1_best_lap;
 
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -15,23 +16,31 @@ import java.util.stream.Stream;
 public class Main {
 
 	public static void main(String[] args) {
-		Path startFilePath = Paths.get("C:\\dev\\eclipse-workspace\\f1-best-lap\\src\\main\\resources\\files\\start.log");
-		Path endFilePath = Paths.get("C:\\dev\\eclipse-workspace\\f1-best-lap\\src\\main\\resources\\files\\end.log");
-		List<Lap> startData = LapDataParser.parse(startFilePath);
-		List<Lap> endData = LapDataParser.parse(endFilePath);
+		String startFileName = "start.log";
+		String endFileName = "end.log";
+		List<Lap> startData = LapDataParser.parse(startFileName);
+		List<Lap> endData = LapDataParser.parse(endFileName);
 		List<Lap> report = LapReport.createReport(startData, endData);
-		print(Paths.get("C:\\dev\\eclipse-workspace\\f1-best-lap\\src\\main\\resources\\files\\abbreviations.txt"), report);
+		print("abbreviations.txt", report);		
 	}
 	
-	private static void print(Path abbreviationFilePath, List<Lap> report) {
+	private static void print(String abbreviationFileName, List<Lap> report) {
 		Map<String, String> abbreviations = new HashMap<>();
 		char[] offset = new char[20];
 		Arrays.fill(offset, ' ');
 		
-		try(Stream<String> stream = Files.lines(abbreviationFilePath))	{
+		ClassLoader classLoader = ClassLoader.getSystemClassLoader();
+		Path filePath;
+		try {
+			filePath = Paths.get(classLoader.getResource(abbreviationFileName).toURI());
+		} catch (URISyntaxException e1) {
+			filePath = Paths.get("/");
+		}
+		
+		try(Stream<String> stream = Files.lines(filePath))	{
 			abbreviations = stream.map(line -> Arrays.asList(line.split("_"))).collect(Collectors.toMap(s -> s.get(0), s -> s.get(1) + "_" + s.get(2)));
 		} catch(IOException e) {
-			System.out.println("Can't read file at path: " + abbreviationFilePath);
+			System.out.println("Can't read file at path: " + abbreviationFileName);
 		}
 		
 		Collections.sort(report, (l1, l2) -> l1.getTime().compareTo(l2.getTime()));
