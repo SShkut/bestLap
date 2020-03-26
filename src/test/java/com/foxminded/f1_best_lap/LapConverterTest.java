@@ -2,9 +2,10 @@ package com.foxminded.f1_best_lap;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import java.time.LocalDate;
-import java.time.LocalTime;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.junit.jupiter.api.Test;
 
@@ -13,11 +14,12 @@ class LapConverterTest {
 	@Test
 	void givenString_whenConvert_thenLapObject() {
 		String text = "SVF2018-05-24_12:02:58.917";
-		LocalDate expectedDate = LocalDate.parse("2018-05-24", DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-		LocalTime expectedTime = LocalTime.parse("12:02:58.917");
-		Lap expected = new Lap("SVF", expectedDate, expectedTime);
+		DateTimeFormatter pattern = DateTimeFormatter.ofPattern("yyyy-MM-dd_HH:mm:ss.SSS");
+		LocalDateTime expectedDateTime = LocalDateTime.parse("2018-05-24_12:02:58.917", pattern);
+		Map<String, LocalDateTime> expected = new HashMap<>();
+		expected.put("SVF", expectedDateTime);
 
-		Lap actual = LapConverter.convert(text);
+		Map<String, LocalDateTime> actual = DriverConverter.convert(text);
 
 		assertEquals(expected, actual);
 	}
@@ -25,9 +27,9 @@ class LapConverterTest {
 	@Test
 	void givenEmptyString_whenConvert_thenNullObject() {
 		String text= "";
-		Lap expected = new Lap(null, null, null);
+		Map<String, LocalDateTime> expected = new HashMap<>();
 		
-		Lap actual = LapConverter.convert(text);
+		Map<String, LocalDateTime> actual = DriverConverter.convert(text);
 		
 		assertEquals(expected, actual);
 	}
@@ -35,9 +37,9 @@ class LapConverterTest {
 	@Test
 	void givenIncorrectData_whenConvert_thenNullObject() {
 		String text = "absfd";
-		Lap expected = new Lap(null, null, null);
+		Map<String, LocalDateTime> expected = new HashMap<>();
 		
-		Lap actual = LapConverter.convert(text);
+		Map<String, LocalDateTime> actual = DriverConverter.convert(text);
 		
 		assertEquals(expected, actual);
 	}
