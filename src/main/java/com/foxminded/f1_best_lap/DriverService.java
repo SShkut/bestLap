@@ -2,21 +2,28 @@ package com.foxminded.f1_best_lap;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
 public class DriverService {
+	
+	private final QualifyingDataParser qualifyingDataParser;
+	private final DriverDataParser driverDataParser;
+	
+	public DriverService(QualifyingDataParser qualifyingDataParser, DriverDataParser driverDataParser) {
+		this.qualifyingDataParser = qualifyingDataParser;
+		this.driverDataParser = driverDataParser;
+	}
 
 	public List<Driver> getDrivers() {
 		Map<String, LocalDateTime> qualifyingStartData;
 		Map<String, LocalDateTime> qualifyingEndData;
 		Map<String, String> driverData;
 		
-		qualifyingStartData = QualifyingDataParser.parse("start.log");
-		qualifyingEndData = QualifyingDataParser.parse("end.log");
-		driverData = DriverDataParser.parse("abbreviations.txt");
+		qualifyingStartData = qualifyingDataParser.parse("start.log");
+		qualifyingEndData = qualifyingDataParser.parse("end.log");
+		driverData = driverDataParser.parse("abbreviations.txt");
 				
 		return driverData.entrySet()
 				.stream()
@@ -25,8 +32,7 @@ public class DriverService {
 					String name = nameAndTeam[0];
 					String team = nameAndTeam[1];
 					Duration duration = Duration.between(qualifyingStartData.get(abbr.getKey()), qualifyingEndData.get(abbr.getKey()));
-					LocalTime qualifyingTime = LocalTime.ofSecondOfDay(duration.getSeconds()).plusNanos(duration.getNano());
-					return new Driver(name, team, qualifyingTime);
+					return new Driver(name, team, duration);
 				})
 				.collect(Collectors.toList());
 	}

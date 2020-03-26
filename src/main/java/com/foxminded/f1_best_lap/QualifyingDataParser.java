@@ -12,12 +12,8 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class QualifyingDataParser {
-	
-	private QualifyingDataParser() {
-		throw new IllegalStateException("Utility class");
-	}
 
-	public static Map<String, LocalDateTime> parse(String fileName) {
+	public Map<String, LocalDateTime> parse(String fileName) {
 		ClassLoader classLoader = ClassLoader.getSystemClassLoader();
 		Path filePath;
 		

@@ -10,12 +10,8 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class DriverDataParser {
-
-	private DriverDataParser() {
-		throw new IllegalStateException("Unility class");
-	}
 	
-	public static Map<String, String> parse(String fileName) {
+	public Map<String, String> parse(String fileName) {
 		ClassLoader classLoader = ClassLoader.getSystemClassLoader();
 		Path filePath;
 		
