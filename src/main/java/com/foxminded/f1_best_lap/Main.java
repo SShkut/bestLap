@@ -6,7 +6,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class Main {
 
 	public static void main(String[] args) {
-		RacerRepository racerRepository = new RacerRepository();
+		RacerRepository racerRepository = new RacerRepository(new RacerDAO());
 		Formatter formatter = new Formatter();		
 		List<Racer> racers = racerRepository.getRacers();
 		AtomicInteger index = new AtomicInteger(1);
