@@ -10,18 +10,17 @@ import java.time.format.DateTimeFormatter;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-class FormatterTest {
+class TopRacersFormatterTest {
 	
-	private static final String NEWLINE = System.lineSeparator();
 	private static final DateTimeFormatter PATTERN = DateTimeFormatter.ofPattern("yyyy-MM-dd_HH:mm:ss.SSS");
 	
-	private Formatter formatter;
+	private TopRacersFormatter topRacersFormatter;
 	private Racer racer;
 	private LocalTime timeSpent;
 
 	@BeforeEach
 	void setUp() throws Exception {
-		formatter = new Formatter();
+		topRacersFormatter = new TopRacersFormatter();
 		LocalDateTime startTime = LocalDateTime.parse("2018-05-24_12:14:12.054", PATTERN);
 		LocalDateTime endTime = LocalDateTime.parse("2018-05-24_12:15:24.067", PATTERN);	
 		Duration duration = Duration.between(startTime, endTime);
@@ -32,9 +31,10 @@ class FormatterTest {
 	@Test
 	void givenDriverAndIndex_whenFormat_thenReturnFormattedString() {
 		int index = 1;
+		int qualifiedNumber = 15;
 
 		String expected = String.format("%-25s%-30s%-15s%n", String.valueOf(index) + ". " + racer.getName(), "|" + racer.getTeam(), "|" + timeSpent);
-		String actual = formatter.format(racer, index);
+		String actual = topRacersFormatter.formatRacer(racer, index, qualifiedNumber);
 		
 		assertEquals(expected, actual);
 	}
@@ -42,10 +42,11 @@ class FormatterTest {
 	@Test
 	void givenLastQualifiedDriver_whenFormat_thenReturnFormattedStringWithDelimiter() {
 		int index = 15;
+		int qualifiedNumber = 15;
 		
 		String expected = String.format("%-25s%-30s%-15s%n", String.valueOf(index) + ". " + racer.getName(), "|" + racer.getTeam(), "|" + timeSpent)
 				+ String.format("%s%n", "------------------------------------------------------------------------");
-		String actual = formatter.format(racer, index);
+		String actual = topRacersFormatter.formatRacer(racer, index, qualifiedNumber);
 		
 		assertEquals(expected, actual);
 	}
@@ -53,9 +54,10 @@ class FormatterTest {
 	@Test
 	void givenNullDriver_whenFormat_thenReturnEmptyString() {
 		int index = 1;
+		int qualifiedNumber = 15;
 		
 		String expected = "";		
-		String actual = formatter.format(null, index);
+		String actual = topRacersFormatter.formatRacer(null, index, qualifiedNumber);
 		
 		assertEquals(expected, actual);
 	}
@@ -63,9 +65,10 @@ class FormatterTest {
 	@Test
 	void givenLessThanZeroIndex_whenFormat_thenEmptyString() {
 		int index = -1;
+		int qualifiedNumber = 15;
 		
 		String expected = "";
-		String actual = formatter.format(racer, index);
+		String actual = topRacersFormatter.formatRacer(racer, index, qualifiedNumber);
 		
 		assertEquals(expected, actual);
 	}
