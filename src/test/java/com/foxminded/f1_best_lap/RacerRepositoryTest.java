@@ -5,6 +5,7 @@ import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
 
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
@@ -29,7 +30,7 @@ class RacerRepositoryTest {
 	}
 
 	@Test
-	void givenCorrectData_whenGetRacers_thenReturnRacersList() throws IOException {	
+	void givenCorrectData_whenGetRacers_thenReturnRacersList() throws IOException, URISyntaxException {	
 		List<Racer> expected = new ArrayList<>(); 
 		when(fileReader.readFile("start.txt")).thenReturn(Stream.of("LHM2018-05-24_12:18:20.125"));
 		when(fileReader.readFile("end.txt")).thenReturn(Stream.of("LHM2018-05-24_12:19:32.585"));
@@ -44,7 +45,7 @@ class RacerRepositoryTest {
 	}
 	
 	@Test
-	void givenEmptyStream_whenGetRacers_thenReturnEmptyList() throws IOException {
+	void givenEmptyStream_whenGetRacers_thenReturnEmptyList() throws IOException, URISyntaxException {
 		List<Racer> expected = new ArrayList<>(); 
 		when(fileReader.readFile("start.txt")).thenReturn(Stream.empty());
 		when(fileReader.readFile("end.txt")).thenReturn(Stream.of("LHM2018-05-24_12:19:32.585"));
@@ -56,7 +57,7 @@ class RacerRepositoryTest {
 	}
 	
 	@Test
-	void givenEmptyString_whenGetRacers_thenReturnEmptyList() throws IOException {
+	void givenEmptyString_whenGetRacers_thenReturnEmptyList() throws IOException, URISyntaxException {
 		List<Racer> expected = new ArrayList<>(); 
 		when(fileReader.readFile("start.txt")).thenReturn(Stream.of(""));
 		when(fileReader.readFile("end.txt")).thenReturn(Stream.of("LHM2018-05-24_12:19:32.585"));

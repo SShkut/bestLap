@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.stream.Collectors;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -20,7 +21,7 @@ class FileReaderTest {
 	}
 	
 	@Test
-	void givenExistentFile_whenReadFile_thenReturnStream() throws IOException {
+	void givenExistentFile_whenReadFile_thenReturnStream() throws IOException, URISyntaxException {
 		String newLine = System.lineSeparator();
 		String expected = String.format("%s%n%s", "MES2018-05-24_12:05:58.778", "RGH2018-05-24_12:06:27.441");
 		
@@ -30,8 +31,8 @@ class FileReaderTest {
 	}
 	
 	@Test 
-	void givenNotExistentFileName_whenReadFile_thenThrowException() {
-		
+	void givenNotExistentFileName_whenReadFile_thenThrowException() throws IOException, URISyntaxException {
+				
 		assertThrows(FileNotFoundException.class, () -> reader.readFile("notExists.txt"));
 	}
 }
