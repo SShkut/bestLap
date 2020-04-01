@@ -6,7 +6,7 @@
 	<name>f1-best-lap</name>
 	<properties>
 		<junit.version>5.6.0</junit.version>
-		<mockito.version>1.10.19</mockito.version>
+		<mockito.version>2.10.0</mockito.version>
 		<maven.version>3.8.0</maven.version>
 		<maven.compile.source>1.8</maven.compile.source>
 		<maven.compile.target>1.8</maven.compile.target>
@@ -19,11 +19,11 @@
 			<scope>test</scope>
 		</dependency>
 		<dependency>
-			<groupId>org.mockito</groupId>
-		    <artifactId>mockito-all</artifactId>
+		    <groupId>org.mockito</groupId>
+		    <artifactId>mockito-core</artifactId>
 		    <version>${mockito.version}</version>
 		    <scope>test</scope>
-		</dependency>
+		</dependency>	
 	</dependencies>
 	<build>
 		<plugins>

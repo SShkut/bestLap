@@ -20,7 +20,7 @@ class RacerConverterTest {
 	private Map<String, LocalDateTime> endData;
 
 	@BeforeEach
-	void setUp() throws Exception {
+	void setUp() {
 		racerConverter = new RacerConverter();
 		startData = new HashMap<>();
 		endData = new HashMap<>();
